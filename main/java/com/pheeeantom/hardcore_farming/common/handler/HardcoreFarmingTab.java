@@ -18,7 +18,7 @@ public class HardcoreFarmingTab extends CreativeTabs {
 	@Override
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem() {
-        return ModItems.SCYTHE;
+        return ModItems.IRON_SCYTHE;
     }
 
 }

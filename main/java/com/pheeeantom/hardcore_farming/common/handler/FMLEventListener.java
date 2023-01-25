@@ -14,8 +14,10 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockCrops;
+import net.minecraft.block.BlockDoublePlant;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockFarmland;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.material.Material;
 import net.minecraft.nbt.NBTBase;
@@ -122,14 +124,14 @@ public class FMLEventListener {
 			if (save != null) {
 				plantedCrops = save.getPlantedCrops();
 				if (plantedCrops != null) {
-					System.out.println(plantedCrops.toString());
+					//System.out.println(plantedCrops.toString());
 				}
 				else {
-					System.out.println("plantedCrops == null");
+					//System.out.println("plantedCrops == null");
 				}
 			}
 			else {
-				System.out.println("save == null");
+				//System.out.println("save == null");
 			}
 		}
 	}
@@ -196,11 +198,11 @@ public class FMLEventListener {
 			    		list.appendTag(coords);
 			    		plantedCrops.setTag("PlantedCrops", list);
 			    	}
-			    	System.out.println(plantedCrops.toString());
+			    	//System.out.println(plantedCrops.toString());
 			    	save.setPlantedCrops(plantedCrops);
 				}
 				else {
-					System.out.println("save == null");
+					//System.out.println("save == null");
 				}
 			}
 		}
@@ -209,11 +211,11 @@ public class FMLEventListener {
 	@SubscribeEvent
 	public void onBlockHarvestDrops(BlockEvent.HarvestDropsEvent event) {
 		//System.out.println(event.placedBlock.getLocalizedName());
-		System.out.println("isCrops?" + (event.block instanceof BlockCrops));
-		System.out.println("isWeed?" + (event.block instanceof WeedBlock));
-		System.out.println("isHarvesterNull?" + (event.harvester == null));
+		//System.out.println("isCrops?" + (event.block instanceof BlockCrops));
+		//System.out.println("isWeed?" + (event.block instanceof WeedBlock));
+		//System.out.println("isHarvesterNull?" + (event.harvester == null));
 		if (event.harvester != null) {
-			System.out.println("isNotCreative?" + (!event.harvester.capabilities.isCreativeMode));
+			//System.out.println("isNotCreative?" + (!event.harvester.capabilities.isCreativeMode));
 		}
 		if (!event.world.isRemote) {
 			if ((event.block instanceof BlockCrops || event.block instanceof WeedBlock)
@@ -264,13 +266,13 @@ public class FMLEventListener {
 							}
 						}
 						plantedCrops.setTag("PlantedCrops", list);
-						System.out.println(plantedCrops.toString());
+						//System.out.println(plantedCrops.toString());
 						save.setPlantedCrops(plantedCrops);
 			    	}
 			    	//System.out.println("HI");
 				}
 				else {
-					System.out.println("save == null");
+					//System.out.println("save == null");
 				}
 			}
 		}
@@ -279,67 +281,87 @@ public class FMLEventListener {
 	@SubscribeEvent
 	public void onBlockBreak(BlockEvent.BreakEvent event) {
 		//System.out.println(event.placedBlock.getLocalizedName());
-		System.out.println("isCrops?" + (event.block instanceof BlockCrops));
-		System.out.println("isWeed?" + (event.block instanceof WeedBlock));
-		System.out.println("isCreative?" + (event.getPlayer().capabilities.isCreativeMode));
+		//System.out.println("isCrops?" + (event.block instanceof BlockCrops));
+		//System.out.println("isWeed?" + (event.block instanceof WeedBlock));
+		//System.out.println("isCreative?" + (event.getPlayer().capabilities.isCreativeMode));
 		if (!event.world.isRemote) {
 		    if (event.getPlayer() != null) {
 		    	//System.out.println(event.block.getMaterial() == Material.vine);
 		        if (event.getPlayer().getHeldItem() != null && event.getPlayer().getHeldItem().getItem() instanceof ScytheItem &&
-		        		event.block.getMaterial() != Material.vine) {
+		        		(event.block.getMaterial() != Material.vine &&
+		        		!(event.block instanceof BlockDoublePlant) &&
+		        		!(event.block instanceof BlockFlower))) {
 		            event.setCanceled(true);
 		            return;
 		        }
 		        if (event.getPlayer().getHeldItem() != null &&
 		        		event.getPlayer().getHeldItem().getItem() instanceof ScytheItem &&
-		        		event.block.getMaterial() == Material.vine) {
-			    	if (event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z).getMaterial() == Material.vine) {
+		        		(event.block.getMaterial() == Material.vine ||
+		        		event.block instanceof BlockDoublePlant ||
+		        		event.block instanceof BlockFlower)) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z).getMaterial() == Material.vine ||
+			    			event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z) instanceof BlockFlower) {
 			    		event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z).dropBlockAsItem(event.getPlayer().worldObj, event.x - 1, event.y, event.z, event.getPlayer().worldObj.getBlockMetadata(event.x - 1, event.y, event.z), 0);
 			    		event.getPlayer().worldObj.setBlockToAir(event.x - 1, event.y, event.z);
-			    		event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    		System.out.println("break");
+			    		event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    		//System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z).dropBlockAsItem(event.getPlayer().worldObj, event.x + 1, event.y, event.z, event.getPlayer().worldObj.getBlockMetadata(event.x + 1, event.y, event.z), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x + 1, event.y, event.z);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z - 1).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z - 1).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z - 1) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z - 1) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z - 1).dropBlockAsItem(event.getPlayer().worldObj, event.x - 1, event.y, event.z - 1, event.getPlayer().worldObj.getBlockMetadata(event.x - 1, event.y, event.z - 1), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x - 1, event.y, event.z - 1);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z + 1).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z + 1).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z + 1) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z + 1) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x - 1, event.y, event.z + 1).dropBlockAsItem(event.getPlayer().worldObj, event.x - 1, event.y, event.z + 1, event.getPlayer().worldObj.getBlockMetadata(event.x - 1, event.y, event.z + 1), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x - 1, event.y, event.z + 1);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z - 1).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z - 1).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z - 1) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z - 1) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z - 1).dropBlockAsItem(event.getPlayer().worldObj, event.x + 1, event.y, event.z - 1, event.getPlayer().worldObj.getBlockMetadata(event.x + 1, event.y, event.z - 1), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x + 1, event.y, event.z - 1);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z + 1).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z + 1).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z + 1) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z + 1) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x + 1, event.y, event.z + 1).dropBlockAsItem(event.getPlayer().worldObj, event.x + 1, event.y, event.z + 1, event.getPlayer().worldObj.getBlockMetadata(event.x + 1, event.y, event.z + 1), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x + 1, event.y, event.z + 1);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x, event.y, event.z - 1).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x, event.y, event.z - 1).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x, event.y, event.z - 1) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x, event.y, event.z - 1) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x, event.y, event.z - 1).dropBlockAsItem(event.getPlayer().worldObj, event.x, event.y, event.z - 1, event.getPlayer().worldObj.getBlockMetadata(event.x, event.y, event.z - 1), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x, event.y, event.z - 1);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
-			    	if (event.getPlayer().worldObj.getBlock(event.x, event.y, event.z + 1).getMaterial() == Material.vine) {
+			    	if (event.getPlayer().worldObj.getBlock(event.x, event.y, event.z + 1).getMaterial() == Material.vine ||
+			        		event.getPlayer().worldObj.getBlock(event.x, event.y, event.z + 1) instanceof BlockDoublePlant ||
+			        		event.getPlayer().worldObj.getBlock(event.x, event.y, event.z + 1) instanceof BlockFlower) {
 			    	    event.getPlayer().worldObj.getBlock(event.x, event.y, event.z + 1).dropBlockAsItem(event.getPlayer().worldObj, event.x, event.y, event.z + 1, event.getPlayer().worldObj.getBlockMetadata(event.x, event.y, event.z + 1), 0);
 			    	    event.getPlayer().worldObj.setBlockToAir(event.x, event.y, event.z + 1);
-			    	    event.getPlayer().getHeldItem().damageItem(5, event.getPlayer());
-			    	    System.out.println("break");
+			    	    event.getPlayer().getHeldItem().damageItem(1, event.getPlayer());
+			    	    //System.out.println("break");
 			    	}
 		    	}
 		    }
@@ -392,13 +414,13 @@ public class FMLEventListener {
 							}
 						}
 						plantedCrops.setTag("PlantedCrops", list);
-						System.out.println(plantedCrops.toString());
+						//System.out.println(plantedCrops.toString());
 						save.setPlantedCrops(plantedCrops);
 			    	}
 			    	//System.out.println("HI");
 				}
 				else {
-					System.out.println("save == null");
+					//System.out.println("save == null");
 				}
 			}
 		}
@@ -429,7 +451,7 @@ public class FMLEventListener {
 								//System.out.println(list.func_150306_c(i).toString() + "   " +
 								//		coords.toString());
 								//System.out.println("HELLO2");
-								double probability = 0.0005;
+								double probability = 0.00007;
 								if (event.world.getBlock(list.func_150306_c(i)[0] - 1, list.func_150306_c(i)[1], list.func_150306_c(i)[2]) instanceof WeedBlock) {
 									probability *= 2;
 								}
@@ -467,11 +489,11 @@ public class FMLEventListener {
 						}
 					}
 					else {
-						System.out.println("plantedCrops == null");
+						//System.out.println("plantedCrops == null");
 					}
 				}
 				else {
-					System.out.println("save == null");
+					//System.out.println("save == null");
 				}
 				tickNum = 0;
 			}

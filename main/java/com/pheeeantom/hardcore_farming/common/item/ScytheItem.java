@@ -9,6 +9,8 @@ import com.pheeeantom.hardcore_farming.common.handler.HardcoreFarmingTab;
 import com.pheeeantom.hardcore_farming.common.handler.ModItems;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,13 +25,13 @@ public class ScytheItem extends ItemTool {
 	//private static final Set field_150917_c = Sets.newHashSet(new Block[] {Blocks.planks, Blocks.bookshelf, Blocks.log, Blocks.log2, Blocks.chest, Blocks.pumpkin, Blocks.lit_pumpkin});
 	private static final Set field_150917_c = Sets.newHashSet(new Block[] {});
 
-    public ScytheItem(Item.ToolMaterial p_i45327_1_) {
+    public ScytheItem(Item.ToolMaterial p_i45327_1_, String name) {
         super(3.0F, p_i45327_1_, field_150917_c);
-        setUnlocalizedName("scythe");
-        setTextureName(HardcoreFarmingMod.MODID + ":scythe");
+        setUnlocalizedName(name);
+        setTextureName(HardcoreFarmingMod.MODID + ":" + name);
         //setCreativeTab(ModTab.INSTANCE);
 
-        setHarvestLevel("scythe", p_i45327_1_.getHarvestLevel());
+        setHarvestLevel(name, p_i45327_1_.getHarvestLevel());
         
         //setMaxDamage(100);
         
@@ -38,7 +40,7 @@ public class ScytheItem extends ItemTool {
 
     public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_) {
         //return p_150893_2_.getMaterial() != Material.wood && p_150893_2_.getMaterial() != Material.plants && p_150893_2_.getMaterial() != Material.vine ? super.func_150893_a(p_150893_1_, p_150893_2_) : this.efficiencyOnProperMaterial;
-    	return p_150893_2_.getMaterial() == Material.vine ? 1000.0F : 0.0F;
+    	return p_150893_2_.getMaterial() == Material.vine || p_150893_2_ instanceof BlockDoublePlant || p_150893_2_ instanceof BlockFlower? 1000.0F : 0.0F;
     }
     
     public boolean isDamageable() {
@@ -46,7 +48,7 @@ public class ScytheItem extends ItemTool {
     }
     
     public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_) {
-        p_150894_1_.damageItem(5, p_150894_7_);
+        p_150894_1_.damageItem(1, p_150894_7_);
 
         return true;
     }

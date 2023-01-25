@@ -149,13 +149,13 @@ public class WateringCanItem extends Item {
                     }*/
 
                     if (!p_77659_3_.canPlayerEdit(i, j, k, movingobjectposition.sideHit, p_77659_1_)) {
-                    	System.out.println(1000);
+                    	//System.out.println(1000);
                         return p_77659_1_;
                     }
 
                     if (this.water(p_77659_2_, i, j, k)/* && !p_77659_3_.capabilities.isCreativeMode*/) {
                     	fillingByte -= 5;
-                    	System.out.println(fillingByte);
+                    	//System.out.println(fillingByte);
                     	filling.setByte("filling", (byte)fillingByte);
                         p_77659_1_.setTagCompound(filling);
                         p_77659_1_.setItemDamage(fillingByte);
@@ -164,7 +164,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i - 1, j, k)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -174,7 +174,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i + 1, j, k)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -184,7 +184,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i - 1, j, k - 1)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -194,7 +194,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i - 1, j, k + 1)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -204,7 +204,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i + 1, j, k - 1)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -214,7 +214,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i + 1, j, k + 1)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -224,7 +224,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i, j, k - 1)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -234,7 +234,7 @@ public class WateringCanItem extends Item {
                         }
                         if (this.water(p_77659_2_, i, j, k + 1)) {
                         	fillingByte -= 5;
-                        	System.out.println(fillingByte);
+                        	//System.out.println(fillingByte);
                         	filling.setByte("filling", (byte)fillingByte);
                             p_77659_1_.setTagCompound(filling);
                             p_77659_1_.setItemDamage(fillingByte);
@@ -277,13 +277,13 @@ public class WateringCanItem extends Item {
     			p_77875_1_.getBlockMetadata(p_77875_2_, p_77875_3_, p_77875_4_) < 7) {
     		//Максимальное значение для метадаты - если засунуть 20 то получится 4 из-за обрезки битов
 	    	p_77875_1_.setBlockMetadataWithNotify(p_77875_2_, p_77875_3_, p_77875_4_, 15, 2);
-	    	System.out.println(p_77875_1_.getBlockMetadata(p_77875_2_, p_77875_3_, p_77875_4_));
+	    	//System.out.println(p_77875_1_.getBlockMetadata(p_77875_2_, p_77875_3_, p_77875_4_));
 	    	return true;
     	}
     	else if (p_77875_1_.getBlock(p_77875_2_, p_77875_3_ - 1, p_77875_4_) instanceof BlockFarmland &&
     			p_77875_1_.getBlockMetadata(p_77875_2_, p_77875_3_ - 1, p_77875_4_) < 7) {
     		p_77875_1_.setBlockMetadataWithNotify(p_77875_2_, p_77875_3_ - 1, p_77875_4_, 15, 2);
-	    	System.out.println(p_77875_1_.getBlockMetadata(p_77875_2_, p_77875_3_ - 1, p_77875_4_));
+	    	//System.out.println(p_77875_1_.getBlockMetadata(p_77875_2_, p_77875_3_ - 1, p_77875_4_));
 	    	return true;
     	} else {
     		return false;

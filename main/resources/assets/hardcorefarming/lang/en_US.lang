@@ -1,3 +1,7 @@
 item.watering_can.name=Watering Can
-item.scythe.name=Scythe
+item.wooden_scythe.name=Wooden Scythe
+item.stone_scythe.name=Stone Scythe
+item.iron_scythe.name=Iron Scythe
+item.golden_scythe.name=Golden Scythe
+item.diamond_scythe.name=Diamond Scythe
 itemGroup.hardcorefarming=Hardcore Farming
